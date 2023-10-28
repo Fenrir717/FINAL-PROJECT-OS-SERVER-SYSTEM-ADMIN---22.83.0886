@@ -9,3 +9,13 @@ Daftar Isi
 5. Instalasi dan Konfigurasi DNS Server
 6. Instalasi dan Konfigurasi Web Server
 7. Instalasi dan Konfigurasi Mail Server
+
+
+1. Instalasi dan Konfigurasi SSH Server
+
+   1.1 Instalasi SSH
+   **Langkah 1: Lakukan Instalasi Paket SSH Server**
+   '''
+   apt-get install openssh-server
+   '''
+   
