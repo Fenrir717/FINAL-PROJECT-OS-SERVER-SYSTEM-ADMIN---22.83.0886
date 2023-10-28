@@ -8,3 +8,4 @@ Daftar Isi
 4. Instalasi dan Konfigurasi DNS Server
 5. Instalasi dan Konfigurasi Mail Server
 6. Instalasi dan Konfigurasi Web Server
+7. Instalasi dan Konfigurasi Database Server
