@@ -5,7 +5,7 @@ Daftar Isi
 1. Instalasi dan Konfigurasi SSH
 2. Instalasi dan Konfigurasi DHCP Server
 3. Instalasi dan Konfigurasi FTP dan Samba Server
-4. Instalasi dan Konfigurasi DNS Server
-5. Instalasi dan Konfigurasi Mail Server
+4. Instalasi dan Konfigurasi Database Server
+5. Instalasi dan Konfigurasi DNS Server
 6. Instalasi dan Konfigurasi Web Server
-7. Instalasi dan Konfigurasi Database Server
+7. Instalasi dan Konfigurasi Mail Server
