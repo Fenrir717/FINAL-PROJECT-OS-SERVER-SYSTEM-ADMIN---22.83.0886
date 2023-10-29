@@ -279,6 +279,47 @@ ini tampilan dari isi direkotori Samba yang diKonfigurasi sebelumnya :
 
 ![Filezila Client FTP](./Screenshot/5.png)
 
+## 4. Instalasi dan Konfigurasi Web Server
+Saya memilih untuk menggunakan Apache2 sebagai server web utama untuk proyek saya daripada Nginx. tidak ada alasan khusus saya memilih apache2,anda bisa memilih Nginx. saya juga akan menginstall CMS wordpress untuk Webserver ini.Apache2 memiliki dukungan yang baik untuk PHP, yang merupakan salah satu persyaratan utama untuk menjalankan WordPress dengan lancar.
+
+### 4.1 Instalasi Apache2
+
+**Langkah 1: Instalasi Paket Apache2**
+```
+apt update
+apt-get install apache2
+```
+**Langkah 2: Buka File Konfigurasi Apache2**
+```
+nano /etc/apache2/sites-available/000-default.conf
+```
+**Langkah 3: Sesuaikan Konfigurasi ini dengan domain yang anda gunakan**
+```
+<VirtualHost *:80>
+        # The ServerName directive sets the request scheme, hostname and port that
+        # the server uses to identify itself. This is used when creating
+        # redirection URLs. In the context of virtual hosts, the ServerName
+        # specifies what hostname must appear in the request's Host: header to
+        # match this virtual host. For the default virtual host (this file) this
+        # value is not decisive as it is used as a last resort host regardless.
+        # However, you must set it for any further virtual host explicitly.
+        #ServerName www.example.com
+
+        ServerAdmin webmaster@finalprojectku.com
+        ServerName finalprojectku.com
+        DocumentRoot /var/www/html
+```
+**Lengkah 4: Restart Layanan Apache2**
+```
+systemctl restart apache2
+```
+**Langkah 4: Cek Apache2 Berjalan**
+Jika Konfigurasi Berhasil seharusnya muncul layanan web default seperti gambar dibawah ini:
+
+
+
+
+
 
 
 
