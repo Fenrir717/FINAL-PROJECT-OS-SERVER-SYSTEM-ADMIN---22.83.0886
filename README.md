@@ -136,7 +136,7 @@ systemctl restart isc-dhcp-server
 
 1.Dari sisi Client anda bisa melakukan Request IP ke DHCP POOL(saya menggunakan Windows sebagai Client)
 
-Gambar
+![DHCP Client](./Screenshot/1.png)
 
 2.Dari sisi Server anda bisa mengamati bahwa ada activity bahwa DHCP meminjamkan IP ke Client
 ```
