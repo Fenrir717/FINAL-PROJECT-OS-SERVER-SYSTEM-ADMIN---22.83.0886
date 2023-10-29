@@ -399,6 +399,10 @@ chown -R www-data:www-data /var/www/html
 
 ### 4.4 Pengujian Konfigurasi Apache2
 
+Tampilkan dari Postingan yang ada di Webserver
+
+![Contoh Postingan](./Screenshot/14.png)
+
 ## 5. Instalasi dan Konfigurasi DNS Server
 
 ### 5.1 Instalasi BIND9
