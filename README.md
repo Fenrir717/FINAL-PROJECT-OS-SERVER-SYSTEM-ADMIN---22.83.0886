@@ -222,6 +222,42 @@ chown :fenrir_group /home/private
 ```
 systemctl restart smbd
 ```
+### 3.3 Konfigurasi VSFTPD(FTP)
+**Langkah 1: Buka File Konfigurasi Utama Vsftpd**
+```
+nano /etc/vsftpd.conf
+```
+**Langkah 2 : Lakukan Perubahan Konfigurasi berikut :**
+```
+listen=YES
+listen_ipv6=NO
+anonymous_enable=NO
+
+#HILANGKAN TANDA PAGAR PADA LINE KONFIGURASI DIBAWAH INI#
+ascii_upload_enable=YES
+ascii_download_enable=YES
+chroot_local_user=YES
+chroot_list_enable=YES
+chroot_list_file=/etc/vsftpd.chroot_list
+ls_recurse_enable=YES
+```
+**Langkah 3: Menambahkan User baru dan Memasukanya ke list chroot**
+Menambahkan user baru
+```
+useradd black_lotus
+passwd black_lotus
+New password:
+Retype new password:
+passwd: password updated successfully
+```
+menambahkan user baru ke list 
+```
+nano /etc/vsftpd.chroot_list
+#Tambahkan user baru di direktori ini
+black_lotus
+```
+
+
 
 
 
