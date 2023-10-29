@@ -8,7 +8,7 @@ Repository ini berisi dokumentasi yang menjelaskan cara instalasi dan konfiguras
 3. [Instalasi dan Konfigurasi FTP dan Samba Server](#3-instalasi-dan-konfigurasi-ftp-dan-samba-server)
 4. [Instalasi dan Konfigurasi Web Server](#4-instalasi-dan-konfigurasi-web-server)
 5. [Instalasi dan Konfigurasi DNS Server](#5-instalasi-dan-konfigurasi-dns-server)
-6. [Instalasi dan Konfigurasi Database Server](#4-instalasi-dan-konfigurasi-database-server)
+6. [Instalasi dan Konfigurasi Database Server](#6-instalasi-dan-konfigurasi-database-server)
 7. [Instalasi dan Konfigurasi Mail Server](#7-instalasi-dan-konfigurasi-mail-server)
    
 
@@ -484,11 +484,109 @@ ini menunjukkan bahwa Konfigurasi DNS untuk mengubah alamat domain ke IP dan seb
 2. Kita uji pada sisi Client:
 ![Ini Pengujian DNS di Client](./Screenshot/7.png)
 
+## 6. Instalasi dan Konfigurasi Database Server
+Dalam proyek ini, saya melakukan instalasi database server menggunakan MariaDB, sebuah sistem manajemen basis data open-source yang kuat. MariaDB digunakan untuk menyimpan dan mengelola data yang diperlukan oleh aplikasi dan situs web. Saya juga menginstal phpMyAdmin, antarmuka web yang memudahkan administrasi dan manajemen database MariaDB, memungkinkan pengguna untuk dengan mudah membuat, mengedit, dan mengelola basis data melalui antarmuka berbasis web yang intuitif.
 
+### 6.1 Instalasi MariaDB
 
+**Langkah 1: Instalasi Paket MariaDB**
+```
+sudo apt-get update
+sudo apt-get install mariadb-server
+```
+### 6.2 Konfigurasi MariaDB
+**Langkah 1: Jalankan Perintah ini**
+```
+mysql_secure_installation
+```
+**Langkah 2: Ikuti Konfigurasi dibawah ini**
 
+Anda Bisa Mengikuti Langkah-Langkah ini:
+```
+NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
+      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
 
+In order to log into MariaDB to secure it, we'll need the current
+password for the root user. If you've just installed MariaDB, and
+haven't set the root password yet, you should just press enter here.
 
+Enter current password for root (enter for none):
+OK, successfully used password, moving on...
+
+Setting the root password or using the unix_socket ensures that nobody
+can log into the MariaDB root user without the proper authorisation.
+
+You already have your root account protected, so you can safely answer 'n'.
+
+Switch to unix_socket authentication [Y/n] n
+ ... skipping.
+
+You already have your root account protected, so you can safely answer 'n'.
+
+Change the root password? [Y/n] n
+ ... skipping.
+
+By default, a MariaDB installation has an anonymous user, allowing anyone
+to log into MariaDB without having to have a user account created for
+them.  This is intended only for testing, and to make the installation
+go a bit smoother.  You should remove them before moving into a
+production environment.
+
+Remove anonymous users? [Y/n] y
+ ... Success!
+
+Normally, root should only be allowed to connect from 'localhost'.  This
+ensures that someone cannot guess at the root password from the network.
+
+Disallow root login remotely? [Y/n] n
+ ... skipping.
+
+By default, MariaDB comes with a database named 'test' that anyone can
+access.  This is also intended only for testing, and should be removed
+before moving into a production environment.
+
+Remove test database and access to it? [Y/n] y
+ - Dropping test database...
+ ... Success!
+ - Removing privileges on test database...
+ ... Success!
+
+Reloading the privilege tables will ensure that all changes made so far
+will take effect immediately.
+
+Reload privilege tables now? [Y/n] y
+ ... Success!
+
+Cleaning up...
+
+All done!  If you've completed all of the above steps, your MariaDB
+installation should now be secure.
+
+Thanks for using MariaDB!
+```
+Bagian "Disallow root login remotely" bisa diatur seusia keperluan,karena disitu saya perlu login dengan root account.
+
+### 6.3 Instalasi dan Konfigurasi Phpmyadmin
+
+**Langkah 1: Lakukan instalasi paket**
+```
+apt-get install phpmyadmin
+```
+**Langkah 2: Konfigurasi Phpmyadmin**
+
+1. Bisa langsung Konfigurasi otomatis agar bisa ditampilkan ke Web Server anda
+   
+![phpmyadmin](./Screenshot/8.png)
+
+2. atau bisa Menggunakan Command Line
+```
+ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
+a2enconf phpmyadmin
+systemctl reload apache2
+```
+
+ ### 6.4 Menguji Konfigurasi 
+ 
 
 
 
