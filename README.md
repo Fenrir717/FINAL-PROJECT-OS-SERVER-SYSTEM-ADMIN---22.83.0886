@@ -322,6 +322,81 @@ Jika Konfigurasi Berhasil seharusnya muncul layanan web default seperti gambar d
 
 ### 4.3 Konfigurasi CMS Wordpress pada Apache2
 
+**Langkah 1: Melakukan Instalasi PHP**
+```
+apt-get update
+apt-get install php php-mysql
+```
+**Langkah 2: Melakukan Instalasi Database Server**
+
+Untuk ini sudah dibuat bab lain jadi anda bisa cek ke [Instalasi Database Server](#6-instalasi-dan-konfigurasi-database-server)
+
+**Langkah 3: Buat Database untuk wordpress**
+
+login ke Database Terlebih dahulu:
+```
+mysql -u root -p
+```
+buat database untuk Wordpress dan berikan password sesuai keinginan anda
+```
+CREATE DATABASE wordpress;
+CREATE USER 'wordpressuser'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpressuser'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
+**Langkah 4: Download dan Extract Paket Wordpress**
+```
+curl -O https://wordpress.org/latest.tar.gz
+tar xzvf latest.tar.gz
+```
+**Langkah 5: Pindahkan isi direktori Wordpress**
+
+saya menyimpan file unduhan di /tmp,jadi diseusikan lokasi nya
+```
+mv /tmp/wordpress/* /var/www/html/
+```
+**Langkah 6: Copy file Konfigurasi utama wordpress**
+```
+cp /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
+```
+Buka Kofigurasi file nya
+```
+nano /var/www/html/wp-config.php
+```
+**Langkah 7: Sesuikan isi Database nya dengan Database Wordpress yang telah dibuat**
+```
+/** The name of the database for WordPress */
+define( 'DB_NAME', 'wordpress' );
+
+/** Database username */
+define( 'DB_USER', 'wordpressuser' );
+
+/** Database password */
+define( 'DB_PASSWORD', '1' );
+
+/** Database hostname */
+define( 'DB_HOST', 'localhost' );
+```
+**Langkah 8: Set hak akses**
+```
+chown -R www-data:www-data /var/www/html
+```
+**Langkah 9: Instalasi Admin Wordpress**
+
+1. Pilih Bahasa yang diinginkan 
+![Pilih Bahasa](./Screenshot/9.png)
+
+2. Isi Nama situs,Password,dan Email
+![Setting Akun](./Screenshot/10.png)
+
+3. Login dengan Akun yang sudah dibuat
+![Login](./Screenshot/11.png)
+
+4. CMS sudah Berhasil diinstall
+![CMS](./Screenshot/12.png)
+
+
 ### 4.4 Pengujian Konfigurasi Apache2
 
 ## 5. Instalasi dan Konfigurasi DNS Server
@@ -586,6 +661,9 @@ systemctl reload apache2
 ```
 
  ### 6.4 Menguji Konfigurasi 
+
+berhasil dibuka melalui Webserver Apache2
+![Phpmyadmin](./Screenshot/13.png)
  
 
 
