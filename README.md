@@ -399,7 +399,7 @@ chown -R www-data:www-data /var/www/html
 
 ### 4.4 Pengujian Konfigurasi Apache2
 
-Tampilkan dari Postingan yang ada di Webserver
+Tampilan dari Postingan yang ada di Webserver
 
 ![Contoh Postingan](./Screenshot/14.png)
 
