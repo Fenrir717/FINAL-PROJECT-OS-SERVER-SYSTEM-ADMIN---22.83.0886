@@ -387,7 +387,7 @@ $TTL    604800
                          604800 )       ; Negative Cache TTL
 ;
 @       IN      NS      finalprojectku.com.
-10.171  IN      PTR     finalprojectku.com.
+10      IN      PTR     finalprojectku.com.
 ```
 
 **Langkah 4: Buka Konfigurasi named.conf.local untuk konfigurasi DNS Zones**
@@ -467,8 +467,22 @@ systemctl restart bind9
 ```
 apt-get install dnsutils
 ```
+1. Lakukan Nslookup untuk menguji Domain kita:
+```
+root@finalprojectku:/etc/bind# nslookup finalprojectku.com
+Server:         192.168.171.10
+Address:        192.168.171.10#53
 
+Name:   finalprojectku.com
+Address: 192.168.171.10
 
+root@finalprojectku:/etc/bind# nslookup 192.168.171.10
+10.171.168.192.in-addr.arpa     name = finalprojectku.com.
+```
+ini menunjukkan bahwa Konfigurasi DNS untuk mengubah alamat domain ke IP dan sebaliknya(foward&reverse) sudah berjalan dengan baik
+
+2. Kita uji pada sisi Client:
+![Ini Pengujian DNS di Client](./Screenshot/7.png)
 
 
 
