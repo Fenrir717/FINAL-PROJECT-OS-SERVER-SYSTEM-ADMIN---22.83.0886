@@ -3,7 +3,7 @@
 Repository ini berisi dokumentasi yang menjelaskan cara instalasi dan konfigurasi berbagai layanan server, seperti SSH, DHCP, FTP/Samba, DNS, mail server, dan web server, serta Database Server. Dokumen ini ditujukan untuk memandu pengguna dalam mengatur dan mengelola server-server ini dengan langkah-langkah yang jelas.
 
 ## Daftar Isi
-1. [Instalasi dan Konfigurasi SSH](#1-instalasi-dan-konfigurasi-ssh)
+1. [Instalasi dan Konfigurasi SSH](#1-instalasi-dan-konfigurasi-ssh-server)
 2. [Instalasi dan Konfigurasi DHCP Server](#2-instalasi-dan-konfigurasi-dhcp-server)
 3. [Instalasi dan Konfigurasi FTP dan Samba Server](#3-instalasi-dan-konfigurasi-ftp-dan-samba-server)
 4. [Instalasi dan Konfigurasi Database Server](#4-instalasi-dan-konfigurasi-database-server)
@@ -68,7 +68,7 @@ Saya mengubah Port dari 22 ke 9029 untuk mengamankanya agar tidak menggunakan de
 ```
 systemctl restart sshd
 ```
-**Langkah 4: Menguji Konfigurasi**
+### 1.3 Menguji Konfigurasi
 ```
 ssh root@IPADDR -p 9029
 ```
@@ -132,7 +132,7 @@ INTERFACES="enp0s8"
 ```
 systemctl restart isc-dhcp-server
 ```
-**Langkah 5: Menguji Konfigurasi**
+### 2.3 Menguji Konfigurasi
 
 1.Dari sisi Client anda bisa melakukan Request IP ke DHCP POOL(saya menggunakan Windows sebagai Client)
 
@@ -150,3 +150,79 @@ Oct 29 02:45:15 finalprojectku dhcpd[16734]: DHCPOFFER on 192.168.171.11 to 0a:0
 Oct 29 02:45:15 finalprojectku dhcpd[16734]: DHCPREQUEST for 192.168.171.11 (192.168.171.10) from 0a:00:27:00:00:1e (MNHAQIQI) via enp0s8
 Oct 29 02:45:15 finalprojectku dhcpd[16734]: DHCPACK on 192.168.171.11 to 0a:00:27:00:00:1e (MNHAQIQI) via enp0s8
 ```
+## 3. Instalasi dan Konfigurasi FTP dan Samba Server
+Samba dan FTP (vsftpd) adalah dua layanan yang memiliki fungsi serupa, yaitu memungkinkan pertukaran file dan berbagi sumber daya di jaringan. Keduanya digunakan untuk mentransfer file antara komputer dalam jaringan,Karena itu saya akan Mendokumentasikanya dalam 1 bab saja
+### 3.1 Instalasi FTP dan Samba
+**Langkah 1: Instalasi Paket samba**
+```
+apt update
+apt-get install samba
+```
+**Langkah 2: Instalasi Paket VSFTPD(FTP)y**
+Sepertinya ada banyak pilihan seperti "PROFTPD" tapi disini saya menggunakan VSFTPD
+```
+apt update
+apt-get install vsftpd
+```
+
+### 3.2 Konfigurasi Samba
+
+**Langkah 1: Lakukan Backup Konfigurasi Default**
+```
+cp /etc/samba/smb.conf /etc/samba/smb.conf.backup
+```
+**Langkah 2: Hapus isi Konfigurasi didalam file samba.conf**
+```
+echo "" | tee /etc/samba/smb.conf
+```
+**Langkah 3: Buka file konfigurasi Utama Samba**
+```
+nano /etc/samba/smb.conf
+```
+**Langkah 4: isi file Konfigurasi**
+```
+[anonymous]
+path = /home/public
+public = yes
+writable = yes
+guest ok = yes
+guest only = yes
+
+#=========================================================================#
+[Fenrir Group]
+path = /home/private
+public = no
+writeable = yes
+valid user = fenrir_group
+```
+Dalam Sekenario ini,saya membuat 2 Direktori yaitu:
+
+public = untuk user umum
+
+private = untuk user group tertentu
+
+**Langkah 5: Membuat Direktori dan Konfigurasi User**
+```
+mkdir /home/public
+mkdir /home/private
+groupadd fenrir_group
+useradd -G fenrir_group fenrir
+smbpasswd -a fenrir
+New SMB password:
+Retype new SMB password:
+Added user fenrir.
+```
+**Langkah 6: Set permission untuk kedua Direktori**
+```
+chmod 777 /home/public
+chmod 770 /home/private
+chown :fenrir_group /home/private
+```
+**Langkah 7: Restart Service SMB**
+```
+systemctl restart smbd
+```
+
+
+
+
