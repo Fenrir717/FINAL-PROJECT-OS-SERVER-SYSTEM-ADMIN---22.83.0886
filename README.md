@@ -267,14 +267,16 @@ systemctl restart vsftpd
 1. Samba Server
   ini adalah pengujian dari sisi client
 
-Gambar 2
+![Login User](./Screenshot/2.png)
 
-Gambar 3
+ini tampilan dari isi direkotori Samba yang diKonfigurasi sebelumnya :
+
+![Direktori Samba](./Screenshot/3.png)
 
 2. FTP Server
    ini adalah Tampilan dari FTP client(Menggunakan Filezila)
 
-   Gambar 4
+![Filezila Client FTP](./Screenshot/5.png)
 
 
 
