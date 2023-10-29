@@ -289,11 +289,12 @@ Saya memilih untuk menggunakan Apache2 sebagai server web utama untuk proyek say
 apt update
 apt-get install apache2
 ```
-**Langkah 2: Buka File Konfigurasi Apache2**
+### 4.2 Konfigurasi Apache2
+**Langkah 1: Buka File Konfigurasi Apache2**
 ```
 nano /etc/apache2/sites-available/000-default.conf
 ```
-**Langkah 3: Sesuaikan Konfigurasi ini dengan domain yang anda gunakan**
+**Langkah 2: Sesuaikan Konfigurasi ini dengan domain yang anda gunakan**
 ```
 <VirtualHost *:80>
         # The ServerName directive sets the request scheme, hostname and port that
@@ -309,12 +310,175 @@ nano /etc/apache2/sites-available/000-default.conf
         ServerName finalprojectku.com
         DocumentRoot /var/www/html
 ```
-**Lengkah 4: Restart Layanan Apache2**
+**Lengkah 3: Restart Layanan Apache2**
 ```
 systemctl restart apache2
 ```
-**Langkah 4: Cek Apache2 Berjalan**
+**Langkah 4: Cek Apache2**
+
 Jika Konfigurasi Berhasil seharusnya muncul layanan web default seperti gambar dibawah ini:
+
+![Tampilan Default Apache2](./Screenshot/6.png)
+
+### 4.3 Konfigurasi CMS Wordpress pada Apache2
+
+### 4.4 Pengujian Konfigurasi Apache2
+
+## 5. Instalasi dan Konfigurasi DNS Server
+
+### 5.1 Instalasi BIND9
+
+**Langkah 1: Instalasi Paket bind9**
+```
+apt update
+apt-get install bind9
+```
+### 5.2 Konfigurasi BIND9
+
+**Langkah 1: copy file untuk Konfigurasi "Forward" dan "Reverse"**
+```
+cd /etc/bind
+root@finalprojectku:/etc/bind# root@finalprojectku:/etc/bind# ls
+bind.keys  db.127  db.empty  named.conf                named.conf.local    rndc.key
+db.0       db.255  db.local  named.conf.default-zones  named.conf.options  zones.rfc1918
+cp db.local db.forward
+cp db.127 db.reverse
+```
+**Langkah 2: Konfigurasi file db.forward**
+```
+nano db.forward
+```
+Ubahlah Konfigurasi seperti dibawah ini:
+```
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     finalprojectku.com. root.finalprojectku.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      finalprojectku.com.
+@       IN      A       192.168.171.10
+ns      IN      A       192.168.171.10
+www     IN      A       192.168.171.10
+mail    IN      A       192.168.171.10
+@       IN      MX      10 finalprojectku.com.
+```
+disesuaikan dengan domain anda
+
+**Langkah 3: Konfigurasi file db.reverse**
+```
+nano db.reverse
+```
+ubahlah Konfigurasi seperti dibawah ini:
+```
+;
+; BIND reverse data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     finalprojectku.com. root.finalprojectku.com. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      finalprojectku.com.
+10.171  IN      PTR     finalprojectku.com.
+```
+
+**Langkah 4: Buka Konfigurasi named.conf.local untuk konfigurasi DNS Zones**
+```
+nano named.conf.local
+```
+Ubahlah isi file konfigurasi seperti dibawah ini:
+```
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+zone "finalprojectku.com" {
+        type master;
+        file "/etc/bind/db.forward";
+};
+zone "171.168.192.in-addr.arpa" {
+        type master;
+        file "/etc/bind/db.reverse";
+};
+```
+**Langkah 5: Konfigurasi Forwarders**
+```
+nano named.conf.options
+```
+tambahkan DNS forwarders
+```
+options {
+        directory "/var/cache/bind";
+
+        // If there is a firewall between you and nameservers you want
+        // to talk to, you may need to fix the firewall to allow multiple
+        // ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+
+        // If your ISP provided one or more IP addresses for stable
+        // nameservers, you probably want to use them as forwarders.
+        // Uncomment the following block, and insert the addresses replacing
+        // the all-0's placeholder.
+
+        // forwarders {
+        //      192.168.171.10;
+        //      8.8.8.8;
+        // };
+
+        //========================================================================
+        // If BIND logs error messages about the root key being expired,
+        // you will need to update your keys.  See https://www.isc.org/bind-keys
+        //========================================================================
+        dnssec-validation auto;
+
+        listen-on-v6 { any; };
+};
+```
+**Langkah 6: Konfigurasi DNS diperangkat Server**
+```
+nano /etc/resolv.conf
+```
+ubahlah jadi seperti ini:
+```
+domain finalprojectku.com
+search finalprojectku.com
+nameserver 192.168.171.10
+nameserver 8.8.8.8
+```
+**Langkah 7: Restart Layanan Bind9**
+```
+systemctl restart bind9
+```
+
+### 5.3 Pengujian Konfigurasi DNS
+
+**Langkah 1: Instalasi paket dns resolver**
+```
+apt-get install dnsutils
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
