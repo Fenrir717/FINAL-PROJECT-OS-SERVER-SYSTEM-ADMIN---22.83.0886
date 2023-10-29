@@ -232,8 +232,9 @@ nano /etc/vsftpd.conf
 listen=YES
 listen_ipv6=NO
 anonymous_enable=NO
-
 #HILANGKAN TANDA PAGAR PADA LINE KONFIGURASI DIBAWAH INI#
+write_enable=YES
+local_umask=022
 ascii_upload_enable=YES
 ascii_download_enable=YES
 chroot_local_user=YES
@@ -248,7 +249,8 @@ useradd black_lotus
 passwd black_lotus
 New password:
 Retype new password:
-passwd: password updated successfully
+passwd:
+password updated successfully
 ```
 menambahkan user baru ke list 
 ```
@@ -256,6 +258,23 @@ nano /etc/vsftpd.chroot_list
 #Tambahkan user baru di direktori ini
 black_lotus
 ```
+**Langkah 4: Restart Layanan Vsftpd**
+```
+systemctl restart vsftpd
+```
+### 3.4 Pengujian Konfigurasi
+
+1. Samba Server
+  ini adalah pengujian dari sisi client
+
+Gambar 2
+
+Gambar 3
+
+2. FTP Server
+   ini adalah Tampilan dari FTP client(Menggunakan Filezila)
+
+   Gambar 4
 
 
 
