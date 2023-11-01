@@ -837,15 +837,249 @@ service imap-login {
 systemctl restart dovecot
 ```
 
+### 7.4 Konfigurasi Webmail Roundcube
 
+**Langkah 1: Download dan extract File Roundcube**
+```
+wget https://github.com/roundcube/roundcubemail/releases/download/1.6.4/roundcubemail-1.6.4-complete.tar.gz
+tar xzvf roundcubemail-1.6.4-complete.tar.gz
+```
 
+**Langkah 2: Buat Folder di var/ww/html**
+```
+mkdir -p /var/www/html/roundcube
+```
+**Langkah 3: Pindahkan isi direktori roundcube**
+saya menyimpan file unduhan di /tmp,jadi diseusikan lokasi nya
+```
+mv /tmp/roundcubemail-1.6.4/* /var/www/html/roundcube/
+```
 
+**Langkah 4: install php-fpm**
+```
+apt-get install -y php-fpm
+```
 
+**Langkah 5: Buat Database User untuk Roundcube**
+(Bisa disesuaikan ini hanya contoh)
+```
+mysql -u root
+create database roundcubemail;
+CREATE USER roundcube@localhost IDENTIFIED BY '1';
+grant all privileges on roundcubemail.* to roundcube@'localhost' identified by '1';
+flush privileges;
+exit;
+```
+atau jika user roundcube belum mendapat akses ke database bisa menggunakan
+```
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE ON roundcubemail.* TO 'roundcube'@'localhost';
+```
+**Langkah 6: Eksekusi Command ini**
+```
+ mysql roundcubemail < /var/www/html/roundcube/SQL/mysql.initial.sql
+```
+**Langkah 7: Buka direktori utama Roundcubemail**
+```
+cd /var/www/html/roundcube/config/
+```
+**Langkah 8: Copy file default konfigurasi**
+```
+cp config.inc.php.sample config.inc.php
+```
+**Langkah 9: Buka File Konfigurasi**
+```
+nano config.inc.php
+```
 
+**Langkah 9: Ubah isi Konfigurasi**
+```
+dari ini
+<?php
 
+/*
+ +-----------------------------------------------------------------------+
+ | Local configuration for the Roundcube Webmail installation.           |
+ |                                                                       |
+ | This is a sample configuration file only containing the minimum       |
+ | setup required for a functional installation. Copy more options       |
+ | from defaults.inc.php to this file to override the defaults.          |
+ |                                                                       |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) The Roundcube Dev Team                                  |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
+ +-----------------------------------------------------------------------+
+*/
 
+$config = [];
 
+// Database connection string (DSN) for read+write operations
+// Format (compatible with PEAR MDB2): db_provider://user:password@host/database
+// Currently supported db_providers: mysql, pgsql, sqlite, mssql, sqlsrv, oracle
+// For examples see http://pear.php.net/manual/en/package.database.mdb2.intro-dsn.php
+// NOTE: for SQLite use absolute path (Linux): 'sqlite:////full/path/to/sqlite.db?mode=0646'
+//       or (Windows): 'sqlite:///C:/full/path/to/sqlite.db'
+$config['db_dsnw'] = 'mysql://roundcube:pass@localhost/roundcubemail';
 
+// IMAP host chosen to perform the log-in.
+// See defaults.inc.php for the option description.
+$config['imap_host'] = 'localhost:143';
+
+// SMTP server host (for sending mails).
+// See defaults.inc.php for the option description.
+$config['smtp_host'] = 'localhost:587';
+
+// SMTP username (if required) if you use %u as the username Roundcube
+// will use the current username for login
+$config['smtp_user'] = '%u';
+
+// SMTP password (if required) if you use %p as the password Roundcube
+// will use the current user's password for login
+$config['smtp_pass'] = '%p';
+
+// provide an URL where a user can get support for this Roundcube
+$config['support_url'] = '';
+
+// Name your service. This is displayed on the login screen and in the window title
+$config['product_name'] = 'Roundcube Webmail';
+
+// This key is used to encrypt the users imap password which is stored
+// in the session record. For the default cipher method it must be
+// exactly 24 characters long.
+// YOUR KEY MUST BE DIFFERENT THAN THE SAMPLE VALUE FOR SECURITY REASONS
+$config['des_key'] = 'rcmail-!24ByteDESkey*Str';
+
+// List of active plugins (in plugins/ directory)
+$config['plugins'] = [
+    'archive',
+    'zipdownload',
+];
+
+// skin name: folder from skins/
+$config['skin'] = 'elastic';
+```
+Ubah menjadi seperti ini dan sesuaikan dengan database anda
+
+```
+<?php
+
+/*
+ +-----------------------------------------------------------------------+
+ | Local configuration for the Roundcube Webmail installation.           |
+ |                                                                       |
+ | This is a sample configuration file only containing the minimum       |
+ | setup required for a functional installation. Copy more options       |
+ | from defaults.inc.php to this file to override the defaults.          |
+ |                                                                       |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) The Roundcube Dev Team                                  |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
+ +-----------------------------------------------------------------------+
+*/
+
+$config['enable_installer'] = false;
+
+// Database connection string (DSN) for read+write operations
+// Format (compatible with PEAR MDB2): db_provider://user:password@host/database
+// Currently supported db_providers: mysql, pgsql, sqlite, mssql, sqlsrv, oracle
+// For examples see http://pear.php.net/manual/en/package.database.mdb2.intro-dsn.php
+// NOTE: for SQLite use absolute path (Linux): 'sqlite:////full/path/to/sqlite.db?mode=0646'
+//       or (Windows): 'sqlite:///C:/full/path/to/sqlite.db'
+$config['db_dsnw'] = 'mysql://roundcube:1@localhost/roundcubemail';
+
+// IMAP host chosen to perform the log-in.
+// See defaults.inc.php for the option description.
+$config['imap_host'] = 'finalprojectku.com:143';
+
+// SMTP server host (for sending mails).
+// See defaults.inc.php for the option description.
+$config['smtp_host'] = 'finalprojectku:25';
+
+// SMTP username (if required) if you use %u as the username Roundcube
+// will use the current username for login
+$config['smtp_user'] = '%u';
+
+// SMTP password (if required) if you use %p as the password Roundcube
+// will use the current user's password for login
+$config['smtp_pass'] = '%p';
+
+// provide an URL where a user can get support for this Roundcube installation
+$config['support_url'] = '';
+
+// Name your service. This is displayed on the login screen and in the window title
+$config['product_name'] = 'Roundcube Webmail';
+
+// This key is used to encrypt the users imap password which is stored
+// in the session record. For the default cipher method it must be
+// exactly 24 characters long.
+// YOUR KEY MUST BE DIFFERENT THAN THE SAMPLE VALUE FOR SECURITY REASONS
+$config['des_key'] = 'rcmail-!24ByteDESkey*Str';
+
+// List of active plugins (in plugins/ directory)
+$config['plugins'] = [
+    'archive',
+    'zipdownload',
+];
+
+// skin name: folder from skins/
+$config['skin'] = 'elastic';
+$config['smtp_server'] = 'localhost';
+$config['smtp_user'] = '';
+$config['smtp_pass'] = '';
+```
+**Langkah 10: Restart semua layanan**
+```
+systemctl apache2 postfix dovecot
+```
+**Langkah 11: Membuat contoh user untuk test Email**
+saya akan membuat 2 user untuk saling mengirim email
+```
+root@finalprojectku:~# adduser fenrir717
+Adding user `fenrir717' ...
+Adding new group `fenrir717' (1004) ...
+Adding new user `fenrir717' (1004) with group `fenrir717 (1004)' ...
+Creating home directory `/home/fenrir717' ...
+Copying files from `/etc/skel' ...
+New password:
+Retype new password:
+passwd: password updated successfully
+Changing the user information for fenrir717
+Enter the new value, or press ENTER for the default
+        Full Name []: fenrir
+        Room Number []:
+        Work Phone []:
+        Home Phone []:
+        Other []:
+Is the information correct? [Y/n] y
+Adding new user `fenrir717' to supplemental / extra groups `users' ...
+Adding user `fenrir717' to group `users' ...
+root@finalprojectku:~# adduser byul
+Adding user `byul' ...
+Adding new group `byul' (1005) ...
+Adding new user `byul' (1005) with group `byul (1005)' ...
+Creating home directory `/home/byul' ...
+Copying files from `/etc/skel' ...
+New password:
+Retype new password:
+passwd: password updated successfully
+Changing the user information for byul
+Enter the new value, or press ENTER for the default
+        Full Name []: yi byul
+        Room Number []:
+        Work Phone []:
+        Home Phone []:
+        Other []:
+Is the information correct? [Y/n] y
+Adding new user `byul' to supplemental / extra groups `users' ...
+Adding user `byul' to group `users' ...
+```
+
+### 7.5 Menguji Konfigurasi
 
 
 
