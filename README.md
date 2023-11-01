@@ -777,7 +777,65 @@ disable_vrfy_command = yes
 systemctl restart postfix
 ```
 
+### 7.3 Konfigurasi Dovecot
 
+**Langkah 1: Buka file Konfigurasi utama dovecot**
+```
+nano /etc/dovecot/dovecot.conf
+```
+**Langkah 2: Lakukan Perubahan seperti dibawah ini**
+```
+#line 30 : Hilangkan tanda pagar
+listen = *, ::
+```
+
+**Langkah 3: Buka file Konfigurasi dibawah ini**
+```
+nano /etc/dovecot/conf.d/10-auth.conf
+```
+**Langkah 4: Lakukan Perubahan Konfigurasi**
+```
+#line 10 : Hilangkan tanda pagar dan Tambahkan
+disable_plaintext_auth = no
+
+#line 100 : Tambahkan command
+auth_mechanisms = plain login
+```
+**Langkah 5: Buka File Konfigurasi**
+```
+ nano /etc/dovecot/conf.d/10-mail.conf
+```
+**Langkah 6: Lakukan Perubahan Konfigurasi**
+```
+#line 30 : Ubah lokasi nya ke Maildir
+mail_location = maildir:~/Maildir
+```
+
+**Langkah 7: Buka File Konfigurasi**
+```
+nano /etc/dovecot/conf.d/10-master.conf
+```
+**Langkah 8: Lakukan Perubahan Konfigurasi**
+```
+#Hilangkan tanda pagar
+service imap-login {
+  inet_listener imap {
+    port = 143
+  }
+
+#line 107-109 : hilangkan tanda pagar dan tambahkan
+  # Postfix smtp-auth
+  unix_listener /var/spool/postfix/private/auth {
+    mode = 0666
+    user = postfix
+    group = postfix
+  }
+```
+
+**Langkah 9: Restart Layanan Dovecot**
+```
+systemctl restart dovecot
+```
 
 
 
