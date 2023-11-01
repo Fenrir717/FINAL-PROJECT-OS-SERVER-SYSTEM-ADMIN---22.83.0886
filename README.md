@@ -668,7 +668,119 @@ systemctl reload apache2
 
 berhasil dibuka melalui Webserver Apache2
 ![Phpmyadmin](./Screenshot/13.png)
- 
+
+## 7. Instalasi dan Konfigurasi Mail Server
+Saya akan mendokumentasikan tentang instalasi dan mengonfigurasi mail server pada sistem Linux Debian menggunakan postfix sebagai MTA (Mail Transfer Agent) dan dovecot sebagai server IMAP/POP3. Selanjutnya, saya akan mengintegrasikan mail server ini dengan webmail Roundcube. Roundcube adalah antarmuka web yang memudahkan pengguna mengakses dan mengelola email melalui browser, memberikan kenyamanan dan akses cepat tanpa perlu klien email desktop.
+
+ ### 7.1 Instalasi Postfix dan Dovecot
+
+ **Langkah 1: Instalasi paket Postfix**
+ ```
+ apt-get install -y postfix sasl2-bin
+```
+**Langkah 2: Pilih tergantung kebutuhan(saya memilih no configuration karena akan dikonfigurasi secara manual**
+gambar
+
+**Langkah 3: Instalasi paket Dovecot**
+
+```
+ apt-get install -y dovecot-core dovecot-pop3d dovecot-imapd
+```
+
+### 7.2 Konfigurasi Postfix
+
+**Langkah 1: Rename file dan copy file Konfigurasi utama Postfix**
+```
+cp /usr/share/postfix/main.cf.dist /etc/postfix/main.cf
+```
+**Langkah 2: Membuka Direktori Konfigurasi utama Postfix**
+```
+nano /etc/postfix/main.cf
+```
+
+**Langkah 3: Lakukan Perubahan Konfigurasi sebagai berikut**
+```
+#Hilangkan tanda "#" dan lakukan Perubahan Konfigurasi seperti dibawah ini
+
+#line 82 : Hilangkan tanda pagar
+mail_owner = postfix
+
+#line 98 : Hilangkan tanda pagar dan ganti domain nya sesuai domain name anda
+myhostname = finalprojectku.com
+
+#line 106 :Hilangkan tanda pagar dan ganti domain nya sesuai domain name anda
+mydomain = finalprojectku.com
+
+#line 127 : Hilangkan tanda pagar
+myorigin = $mydomain
+
+#line 141 : Hilangkan tanda pagar
+inet_interfaces = all
+
+#line 189 : Hilangkan tanda pagar
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+
+#line 232 : Hilangkan tanda pagar
+local_recipient_maps = unix:passwd.byname $alias_maps
+
+#line 277 : Hilangkan tanda pagar
+mynetworks_style = subnet
+
+#line 294 : Tambahkan subnet Jaringan anda
+mynetworks = 127.0.0.0/8, 192.168.171.0/24
+
+#line 416 : Hilangkan tanda pagar
+alias_maps = hash:/etc/aliases
+
+#line 427 : Hilangkan tanda pagar
+alias_database = hash:/etc/aliases
+
+#line 449 : Hilangkan tanda pagar
+home_mailbox = Maildir/
+
+#line 585: Tambahkan tanda pagar 
+#smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)
+
+#line 659 : Tambahkan command ini
+sendmail_path = /usr/sbin/postfix
+
+#line 664 : Tambahkan command ini
+newaliases_path = /usr/bin/newaliases
+
+#line 669 : Tambahkan command ini
+mailq_path = /usr/bin/mailq
+
+#line 675 : Tambahkan command ini
+setgid_group = postdrop
+
+#line 679 : tambahkan tanda pagar
+#html_directory =
+
+#line 683 : tambahkan tanda pagar
+#manpage_directory =
+
+#line 688 : tambahkan tanda pagar
+#sample_directory =
+
+#line 692 : tambahkan tanda pagar
+#readme_directory =
+
+#line 692 : agar listen Ipv4 jika ingin ipv4 maka ubah ke(all)
+inet_protocols = ipv4
+
+# Tambahkan dibaris akhir
+# menonaktifkan SMTP VRFY untuk mengamankan mail server
+disable_vrfy_command = yes
+```
+**Langkah 4: Restart Layanan Postfix**
+```
+systemctl restart postfix
+```
+
+
+
+
+
 
 
 
