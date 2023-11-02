@@ -1078,6 +1078,33 @@ Is the information correct? [Y/n] y
 Adding new user `byul' to supplemental / extra groups `users' ...
 Adding user `byul' to group `users' ...
 ```
+**Langkah 12: Resolv Problem yang sering terjadi**
+
+Terkadang terdapat masalah yaitu Konfigurasi Postfix karena menggunakan 
+```
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+```
+ini jika belum diKonfigurasi lebih lanjut bisa menyebabkan masalah error seperti
+"SMTP Error: Failed to add recipient : Temporary lookup failure (Code: 451)"
+
+Peyebabnya
+"
+Penyebab utama masalah ini adalah pengaturan konfigurasi Postfix yang menggunakan tipe database hashing (hash) untuk berkas alias. Tipe ini memerlukan berkas database yang sesuai dengan konfigurasi alias, dan berkas tersebut harus dibangun atau diperbarui saat konfigurasi alias berubah."
+
+Solusi?
+```
+newaliases
+```
+atau
+```
+postalias
+```
+setelah itu
+```
+postfix reload
+```
+Perintah ini membangun atau memperbarui berkas database alias, seperti /etc/aliases.db, sesuai dengan konfigurasi alias yang ada.
 
 ### 7.5 Menguji Konfigurasi
 
