@@ -1,4 +1,4 @@
-![image](https://github.com/Fenrir717/FINAL-PROJECT-OS-SERVER-SYSTEM-ADMIN---22.83.0886/assets/147627144/50a357a8-faa1-4bd5-b6c5-a76779a42979)# FINAL-PROJECT-OS-SERVER-SYSTEM-ADMIN---22.83.0886
+# FINAL-PROJECT-OS-SERVER-SYSTEM-ADMIN---22.83.0886
 
 Repository ini berisi dokumentasi yang menjelaskan cara instalasi dan konfigurasi berbagai layanan server, seperti SSH, DHCP, FTP/Samba, DNS, mail server, dan web server, serta Database Server. Dokumen ini ditujukan untuk memandu pengguna dalam mengatur dan mengelola server-server ini dengan langkah-langkah yang jelas.
 
@@ -1078,7 +1078,7 @@ Is the information correct? [Y/n] y
 Adding new user `byul' to supplemental / extra groups `users' ...
 Adding user `byul' to group `users' ...
 ```
-**Langkah 12: Resolv Problem yang sering terjadi**
+**Langkah 12: Menyelesaikan salah satu Problem yang sering terjadi**
 
 Terkadang terdapat masalah yaitu Konfigurasi Postfix karena menggunakan 
 ```
