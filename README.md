@@ -1,4 +1,4 @@
-# FINAL-PROJECT-OS-SERVER-SYSTEM-ADMIN---22.83.0886
+![image](https://github.com/Fenrir717/FINAL-PROJECT-OS-SERVER-SYSTEM-ADMIN---22.83.0886/assets/147627144/50a357a8-faa1-4bd5-b6c5-a76779a42979)# FINAL-PROJECT-OS-SERVER-SYSTEM-ADMIN---22.83.0886
 
 Repository ini berisi dokumentasi yang menjelaskan cara instalasi dan konfigurasi berbagai layanan server, seperti SSH, DHCP, FTP/Samba, DNS, mail server, dan web server, serta Database Server. Dokumen ini ditujukan untuk memandu pengguna dalam mengatur dan mengelola server-server ini dengan langkah-langkah yang jelas.
 
@@ -679,7 +679,7 @@ Saya akan mendokumentasikan tentang instalasi dan mengonfigurasi mail server pad
  apt-get install -y postfix sasl2-bin
 ```
 **Langkah 2: Pilih tergantung kebutuhan(saya memilih no configuration karena akan dikonfigurasi secara manual**
-gambar
+![postfix](./Screenshot/15.png)
 
 **Langkah 3: Instalasi paket Dovecot**
 
@@ -1108,9 +1108,24 @@ Perintah ini membangun atau memperbarui berkas database alias, seperti /etc/alia
 
 ### 7.5 Menguji Konfigurasi
 
+Kita akan menguji Konfigurasi,untuk melakukan test mengirim email di 2 user yang dibuat sebelumnya:
 
+1. Login Ke Account yang dibuat
+![Login Roundcube](./Screenshot/16.png)
 
+2. Mengirim Email dari user fenrir717@finalprojectku.com 
+![sent mail 1](./Screenshot/17.png)
 
+3. Pesan sudah berhasil masuk ke user byul@finalprojectku.com
+![indbox email byul](./Screenshot/18.png)
+
+4. Sekarang kita kirim Email dari user byul@finalprojectku.com ke Fenrir717
+![sent mail 2](./Screenshot/19.png)
+
+5. Pesan sudah berhasil masuk ke user Fenrir717
+![indbox email fenrir](./Screenshot/20.png)
+
+**Dengan begini Konfigurasi Webmail Roundcube dengan MTA Postfix dan Dovecot sudah Berhasil Berjalan**
 
 
 
