@@ -10,6 +10,7 @@ Repository ini berisi dokumentasi yang menjelaskan cara instalasi dan konfiguras
 5. [Instalasi dan Konfigurasi DNS Server](#5-instalasi-dan-konfigurasi-dns-server)
 6. [Instalasi dan Konfigurasi Database Server](#6-instalasi-dan-konfigurasi-database-server)
 7. [Instalasi dan Konfigurasi Mail Server](#7-instalasi-dan-konfigurasi-mail-server)
+8. [Instalasi dan Konfigurasi Monitoring Server](#8-instalasi-dan-konfigurasi-monitoring-server)
    
 
 ## 1. Instalasi dan Konfigurasi SSH Server
@@ -1126,6 +1127,81 @@ Kita akan menguji Konfigurasi,untuk melakukan test mengirim email di 2 user yang
 ![indbox email fenrir](./Screenshot/20.png)
 
 **Dengan begini Konfigurasi Webmail Roundcube dengan MTA Postfix dan Dovecot sudah Berhasil Berjalan**
+
+## 8. instalasi-dan-konfigurasi-monitoring-server
+
+Saya akan melakukan instalasi dan konfigurasi monitoring server yang terdiri dari dua tahap utama. Tahap pertama mencakup pemantauan sumber daya server seperti CPU, memory, dan lainnya menggunakan Prometheus dan Grafana. Tahap kedua adalah log monitoring dengan menggunakan Promtail dan Loki. Dengan alat-alat ini, saya akan memastikan server berjalan dengan baik, serta melacak dan menganalisis log untuk deteksi masalah dan pemecahan masalah yang lebih baik.
+
+### 8.1 Instalasi Prometheus,node-exporter,Loki,promtail dan Grafana
+
+**Langkah 1: Instalasi paket Prometheus dan Node-exporter**
+```
+apt-get install prometheus prometheus-node-exporter
+```
+**Langkah 2: Instalasi Paket Grafana**
+```
+wget -q -O /usr/share/keyrings/grafana.key https://packages.grafana.com/gpg.key
+echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://packages.grafana.com/oss/deb stable main" | tee -a /etc/apt/sources.list.d/grafana.list
+apt-get update
+apt-get install grafana
+```
+**Langkah 3: Instalasi paket Loki dan Promtail** 
+```
+apt-get update
+apt-get install loki
+apt-get install promtail
+```
+optinal(jika ingin logging nya lebih mudah)
+```
+apt-get install rsyslog
+```
+
+### 8.2 Konfigurasi Prometheus
+
+**Langkah 1: Direktori utama prometheus**
+```
+nano /etc/prometheus/prometheus.yml
+```
+**Langkah 2: Tambahkan Monitoring target untuk membuat metrics dari node-exporter**
+```
+#menggunakan port default yaitu 9100,anda bisa menganti ini
+  - job_name: node
+    # If prometheus-node-exporter is installed, grab stats about the local
+    # machine by default.
+    static_configs:
+      - targets: ['localhost:9100']
+```
+
+### 8.3 Konfigurasi Grafana untuk Visualisasi data Resource dari Node Exporter
+
+**Langkah 1: Buka Konfigurasi utama Grafana**
+```
+nano /etc/grafana/grafana.ini
+```
+
+**Langkah 2: Edit Konfigurasi ini**
+```
+[server]
+
+#hilangkan tanda ";"
+;protocol = http
+
+# This is the minimum TLS version allowed. By default, this value is empty. Accepted values are: TLS1.2, TLS1.3. If not>;min_tls_version = ""
+
+# The ip address to bind to, empty will bind to all interfaces
+;http_addr =
+
+#hilangkan tanda ";" jika ingin ganti port
+;http_port = 3000
+
+#hilangkan tanda ";" jika ingin diakses dengan domain/sub domain tertentu
+;domain = localhost
+
+# Redirect to correct domain if host header does not match domain
+# Prevents DNS rebinding attacks
+;enforce_domain = false
+```
+
 
 
 
