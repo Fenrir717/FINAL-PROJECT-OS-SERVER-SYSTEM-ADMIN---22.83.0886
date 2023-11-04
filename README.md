@@ -1382,13 +1382,39 @@ ruler:
   ```
 anda bisa mengganti port atau path penyimpanan log dari Loki
 
+**Langkah 8: Buka halaman http://Domain atau IP anda:3100/metrics**
+![Loki Metrics](./Screenshot/35.png)
+disini anda dapat melihat metrics dari log yang disimpan Loki
 ### 8.5 Konfigurasi untuk Memvisualisasikan Logging ke Grafana
 
+**Langkah 1: Login ke Grafana**
+![Login Grafana](./Screenshot/33.png)
 
+**Langkah 2: Masuk ke Administrator > Connections > Data Resources > Add Data Resources(sama seperti sebelumnya)**
+![Add Loki](./Screenshot/34.png)
+dan cari Loki
 
+**Langkah 3:  Tambahkan URL dari Loki yang digunakan "disini : http://localhost:3100" sesuai dengan service Loki yang menyimpan metrics"**
+![Add URL](./Screenshot/36.png)
 
+**Langkah 4: Klik Explore data**
+![Explore](./Screenshot/37.png)
 
+**Langkah 5: Filter data dari log berdasarkan filename atau job**
 
+![Filter data Grafana](./Screenshot/38.png)
+Disini anda bisa memilig log mana yang akan dimonitor atau semua yang ada didalam job direkotir /var/log/*
 
+**Langkah 6: jika sudah bisa menmabhkan Dashboard atau menambahkan Visualisasi data ke Dashboard yang sudah ada**
+![Add new dashboard](./Screenshot/39.png)
 
+**Langkah 7: Bisa juga mengganti Title dari Dashboard baru**
+![Add new Ttile(./Screenshot/40.png)
+
+**Langkah 8: Pada panel Options bisa diedit untuk menganti "Title dari panelnya**
+![Add new Panel Title](./Screenshot/41.png)
+
+**Langkah 9: Hasil Akhir dari Dashboard
+![Log dashboard](./Screenshot/42.png)
+disini saya memonitor Log dari system,Mail,SSH,dan Cron
 
