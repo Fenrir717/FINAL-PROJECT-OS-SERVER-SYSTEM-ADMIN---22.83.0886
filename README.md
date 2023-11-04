@@ -1409,12 +1409,13 @@ Disini anda bisa memilig log mana yang akan dimonitor atau semua yang ada didala
 ![Add new dashboard](./Screenshot/39.png)
 
 **Langkah 7: Bisa juga mengganti Title dari Dashboard baru**
-![Add new Ttile(./Screenshot/40.png)
+
+![Add new Ttile](./Screenshot/40.png)
 
 **Langkah 8: Pada panel Options bisa diedit untuk menganti "Title dari panelnya**
 ![Add new Panel Title](./Screenshot/41.png)
 
-**Langkah 9: Hasil Akhir dari Dashboard
+**Langkah 9: Hasil Akhir dari Dashboard**
 ![Log dashboard](./Screenshot/42.png)
 disini saya memonitor Log dari system,Mail,SSH,dan Cron
 
