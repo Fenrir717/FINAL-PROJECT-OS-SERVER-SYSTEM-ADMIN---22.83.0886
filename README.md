@@ -1239,8 +1239,8 @@ Disini saya menggunakan Dashboard Node-exporter dari Grafana agar mempercepat Ko
 anda bisa cek dashboard yang saya gunakan di "https://bit.ly/DashboardGrafana"
 
 **Langkah 11: Ambil Source Matrics dari Prometheus dan klik Import**
-![import source prometheus](./Screenshot/32.png)
+![import source prometheus](./Screenshot/31.png)
 
 **Langkah 12: Tampilan dari Monitoring Resouce anda**
 
-![Tampilan Grafana monitor](./Screenshot/33.png)
+![Tampilan Grafana monitor](./Screenshot/32.png)
