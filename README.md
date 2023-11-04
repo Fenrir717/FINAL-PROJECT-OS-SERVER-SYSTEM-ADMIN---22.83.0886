@@ -1242,4 +1242,4 @@ anda bisa cek dashboard yang saya gunakan di "https://bit.ly/DashboardGrafana"
 ![import source prometheus](./Screenshot/32.png)
 
 **Langkah 12: Tampilan dari Monitoring Resouce anda**
-![Monitoring Resource](./Screenshot/33.png)
+![Tampilan Monitoring Resource Grafana](./Screenshot/33.png)
