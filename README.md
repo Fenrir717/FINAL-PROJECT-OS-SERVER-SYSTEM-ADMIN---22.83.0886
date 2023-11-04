@@ -1244,3 +1244,151 @@ anda bisa cek dashboard yang saya gunakan di "https://bit.ly/DashboardGrafana"
 **Langkah 12: Tampilan dari Monitoring Resouce anda**
 
 ![Tampilan Grafana monitor](./Screenshot/32.png)
+
+### 8.4 Konfigurasi Promtail dan Loki
+
+Mengktifkan Logging Service di Server yang akan di Monitoring lognya.
+disini saya akan Mengaktifkan Logging Service dari SSH dan DHCP(bisa disesuaikan)
+
+**Langkah 1: Mengaktifkan logging SSH**
+```
+sudo nano /etc/ssh/sshd_config
+
+Port 9029
+#AddressFamily any
+#ListenAddress 0.0.0.0
+#ListenAddress ::
+
+#HostKey /etc/ssh/ssh_host_rsa_key
+#HostKey /etc/ssh/ssh_host_ecdsa_key
+#HostKey /etc/ssh/ssh_host_ed25519_key
+
+# Ciphers and keying
+#RekeyLimit default none
+
+# Logging
+SyslogFacility AUTH #Hilangkan pagar untuk mengaktifkan Log
+#LogLevel INFO
+```
+**Langkah 2: Mengaktifkan Logging DHCP**
+```
+nano /etc/dhcp/dhcpd.conf
+
+# A slightly different configuration for an internal subnet.
+subnet 192.168.171.0 netmask 255.255.255.0 {
+  range 192.168.171.11 192.168.171.254;
+  log-facility local7;  # Tambahkan baris ini untuk mengaktifkan log
+  option domain-name-servers 192.168.171.10,1.1.1.1;
+  option domain-name "finalprojectku.com";
+  option routers 192.168.171.10;
+  option broadcast-address 192.168.171.255;
+  default-lease-time 600;
+  max-lease-time 7200;
+}
+
+```
+**Langkah 3: Tambahkan ke Rsylog(ini optional Karena saya menggunakannya agar lebih mudah)**
+```
+nano /etc/rsyslog.conf
+auth,authpriv.*                 -/var/log/auth.log #saya tambahkan untuk SSH
+cron.*                          -/var/log/cron.log
+kern.*                          -/var/log/kern.log
+mail.*                          -/var/log/mail.log
+user.*                          -/var/log/user.log
+local7.*                        -/var/log/dhcp.log #untuk DHCP
+```
+
+1.install ACL(optinal jika menggunakan rsylog)
+```
+apt-get install acl
+```
+2.berikan akses ke direktori /var/log/* kepada user Promtail
+```
+setfacl -R -m u:promtail:rX /var/log
+```
+
+**Langkah 4: Buka File Konfigurasi utama Promtail**
+```
+nano /etc/promtail/config.yml
+```
+**Langkah 5: Tambahkan Job monitoring anda**
+```
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://localhost:3100/loki/api/v1/push
+
+scrape_configs:
+- job_name: system
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: varlogs
+      __path__: /var/log/*log
+```
+Pada bagian job_name bisa anda tambahkan ke direktori yang anda ingin kan, misal direktori /var/www/html/error.log.
+itu bisa ditambahkan sebagai target log yang akan dicapture dan di export oleh Promtail selain yang ada di direktori /var/log/*log
+untuk memepermudah ini anda bisa menggunakan rsylog seperti yang saya lakukan agar bisa disatukan di /var/log
+
+**Langkah 6: Buka File Konfigurasi Utama Loki**
+```
+nano /etc/loki/config.yml
+```
+**Langkah 7: Edit Konfigurasi sesuai kebutuhan**
+```
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9096
+
+common:
+  instance_addr: 127.0.0.1
+  path_prefix: /tmp/loki
+  storage:
+    filesystem:
+      chunks_directory: /tmp/loki/chunks
+      rules_directory: /tmp/loki/rules
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+
+query_range:
+  results_cache:
+    cache:
+      embedded_cache:
+        enabled: true
+        max_size_mb: 100
+
+schema_config:
+  configs:
+    - from: 2020-10-24
+      store: boltdb-shipper
+      object_store: filesystem
+      schema: v11
+      index:
+        prefix: index_
+        period: 24h
+
+ruler:
+  alertmanager_url: http://localhost:9093
+  ```
+anda bisa mengganti port atau path penyimpanan log dari Loki
+
+### 8.5 Konfigurasi untuk Memvisualisasikan Logging ke Grafana
+
+
+
+
+
+
+
+
+
