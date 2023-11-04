@@ -1128,7 +1128,7 @@ Kita akan menguji Konfigurasi,untuk melakukan test mengirim email di 2 user yang
 
 **Dengan begini Konfigurasi Webmail Roundcube dengan MTA Postfix dan Dovecot sudah Berhasil Berjalan**
 
-## 8. instalasi-dan-konfigurasi-monitoring-server
+## 8. Instalasi dan Konfigurasi Monitoring Server
 
 Saya akan melakukan instalasi dan konfigurasi monitoring server yang terdiri dari dua tahap utama. Tahap pertama mencakup pemantauan sumber daya server seperti CPU, memory, dan lainnya menggunakan Prometheus dan Grafana. Tahap kedua adalah log monitoring dengan menggunakan Promtail dan Loki. Dengan alat-alat ini, saya akan memastikan server berjalan dengan baik, serta melacak dan menganalisis log untuk deteksi masalah dan pemecahan masalah yang lebih baik.
 
@@ -1171,6 +1171,15 @@ nano /etc/prometheus/prometheus.yml
     static_configs:
       - targets: ['localhost:9100']
 ```
+**Langkah 3: cek ke halaman web anda http://Domain atau IP anda:9100**
+![metrics node exporter](./Screenshot/21.png)
+
+ini resource sudah berhasil diexport matricsnya oleh node-exporter
+
+**Langkah 4: cek juga ke halaman web http://Domain atau IP anda:9090**
+![Prometheus](./Screenshot/22.png)
+dengan begini maka matrics berhasil diexport ke prometheus,sekarang langkah selanjutnya adalah memvisualisasikan
+metrics tersebut dengan Grafana
 
 ### 8.3 Konfigurasi Grafana untuk Visualisasi data Resource dari Node Exporter
 
@@ -1201,7 +1210,36 @@ nano /etc/grafana/grafana.ini
 # Prevents DNS rebinding attacks
 ;enforce_domain = false
 ```
+**Langkah 3: Buka halaman web http://Domain atau IP anda:3000**
+![Admin panel grafana](./Screenshot/23.png)
+Disini silahkan masukkan password default nya, Username: admin Password: admin
 
+**Langkah 4: Ganti password Default nya**
 
+![change pass Grafana](./Screenshot/24.png)
 
+**Langkah 5: Masuk ke menu "Administration"**
+![Ke menu admin](./Screenshot/25.png)
 
+**Langkah 6: klik "Go to Connections"**
+![connection](./Screenshot/26.png)
+
+**Langkah 7: Add data Source dan cari Prometheus**
+![tambahkan data resource](./Screenshot/27.png)
+
+**Langkah 8: Masukkan URL sesuai port prometheus anda**
+![URL prometehus](./Screenshot/28.png)
+
+**Langkah 9: Dashboard > Import**
+![import dashboard](./Screenshot/29.png)
+
+**Langkah 10: copy id atau Json dari Dashboard Grafana dan klik Load**
+![import node exporter dashboard](./Screenshot/30.png)
+Disini saya menggunakan Dashboard Node-exporter dari Grafana agar mempercepat Konfigurasi
+anda bisa cek dashboard yang saya gunakan di "https://bit.ly/DashboardGrafana"
+
+**Langkah 11: Ambil Source Matrics dari Prometheus dan klik Import**
+![import source prometheus](./Screenshot/32.png)
+
+**Langkah 12: Tampilan dari Monitoring Resouce anda**
+![Monitoring Resource](./Screenshot/33.png)
