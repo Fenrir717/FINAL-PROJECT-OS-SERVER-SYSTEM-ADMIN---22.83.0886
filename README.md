@@ -1107,6 +1107,14 @@ postfix reload
 ```
 Perintah ini membangun atau memperbarui berkas database alias, seperti /etc/aliases.db, sesuai dengan konfigurasi alias yang ada.
 
+**"error PHP Fatal error: Uncaught Error: Undefined constant "INTL_IDNA_VARIANT_UTS46" in /var/www/html/roundcube/program/lib/Roundcube/rcube_utils.php:1153"**
+Solosi?
+```
+apt-get install php-intl
+```
+error disebabkan karena "Extension PHP intl Tidak Terpasang atau Tidak Aktif:
+Konstanta tersebut berasal dari ekstensi PHP intl. Pastikan bahwa ekstensi intl sudah terpasang dan diaktifkan di konfigurasi PHP."
+
 ### 7.5 Menguji Konfigurasi
 
 Kita akan menguji Konfigurasi,untuk melakukan test mengirim email di 2 user yang dibuat sebelumnya:
